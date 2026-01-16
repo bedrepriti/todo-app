@@ -9,21 +9,21 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/addnote")
 public class AddNote extends HttpServlet {
-	
-	
-	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String notetext = req.getParameter("notetext");
-		String uname = req.getParameter("uname");
-		
-		
-		NoteDao nDao = new NoteDao();
-		nDao.insertNote(notetext, uname);
-		
-		resp.sendRedirect("home.jsp");
-	}
 
+ protected void service(HttpServletRequest req, HttpServletResponse resp)
+ throws IOException {
+
+     HttpSession s = req.getSession();
+     String uname = (String) s.getAttribute("check");
+
+     String text = req.getParameter("notetext");
+
+     new NoteDao().insertNote(text, uname);
+
+     resp.sendRedirect("home.jsp?status=added");
+ }
 }
