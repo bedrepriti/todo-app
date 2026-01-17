@@ -2,7 +2,6 @@ package com.Dao;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import com.ConnectionFactory.ConnectionFactory;
@@ -16,16 +15,13 @@ public class NoteDao {
         try {
             String sql = "INSERT INTO notes(username, notetext, adddate, moddate) VALUES(?,?,?,?)";
 
-            String date = LocalDateTime.now()
-                    .format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-
-            Connection con = ConnectionFactory.getCon();
+            Connection con = ConnectionFactory.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setString(1, uname);
             ps.setString(2, text);
-            ps.setString(3, date);
-            ps.setString(4, "NA");
+            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setTimestamp(4, null);
 
             ps.executeUpdate();
 
@@ -42,7 +38,7 @@ public class NoteDao {
         try {
             String sql = "SELECT * FROM notes WHERE username=? ORDER BY noteid DESC";
 
-            Connection con = ConnectionFactory.getCon();
+            Connection con = ConnectionFactory.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setString(1, uname);
@@ -54,8 +50,10 @@ public class NoteDao {
                 Note n = new Note();
                 n.setNoteid(rs.getInt("noteid"));
                 n.setNotetext(rs.getString("notetext"));
-                n.setAdddate(rs.getString("adddate"));
-                n.setModdate(rs.getString("moddate"));
+                n.setAdddate(rs.getTimestamp("adddate").toString());
+                n.setModdate(rs.getTimestamp("moddate") != null
+                        ? rs.getTimestamp("moddate").toString()
+                        : "NA");
 
                 list.add(n);
             }
@@ -73,7 +71,7 @@ public class NoteDao {
         try {
             String sql = "DELETE FROM notes WHERE noteid=? AND username=?";
 
-            Connection con = ConnectionFactory.getCon();
+            Connection con = ConnectionFactory.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setInt(1, id);
@@ -92,14 +90,11 @@ public class NoteDao {
         try {
             String sql = "UPDATE notes SET notetext=?, moddate=? WHERE noteid=? AND username=?";
 
-            String date = LocalDateTime.now()
-                    .format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-
-            Connection con = ConnectionFactory.getCon();
+            Connection con = ConnectionFactory.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setString(1, text);
-            ps.setString(2, date);
+            ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             ps.setInt(3, id);
             ps.setString(4, uname);
 
