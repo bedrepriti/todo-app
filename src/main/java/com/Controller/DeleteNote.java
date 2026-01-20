@@ -1,4 +1,4 @@
-@WebServlet("/deletenote")
+ @WebServlet("/deletenote")
 public class DeleteNote extends HttpServlet {
 
  protected void service(HttpServletRequest req, HttpServletResponse resp)
