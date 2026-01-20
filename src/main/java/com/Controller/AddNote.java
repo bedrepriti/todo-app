@@ -24,6 +24,6 @@ public class AddNote extends HttpServlet {
 
      new NoteDao().insertNote(text, uname);
 
-     resp.sendRedirect("home.jsp?status=added");
+     resp. sendRedirect("home.jsp?status=added");
  }
 }
