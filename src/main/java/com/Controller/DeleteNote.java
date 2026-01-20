@@ -1,15 +1,3 @@
-package com.Controller;
-
-import java.io.IOException;
-
-import com.Dao.NoteDao;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 @WebServlet("/deletenote")
 public class DeleteNote extends HttpServlet {
 
@@ -19,9 +7,30 @@ public class DeleteNote extends HttpServlet {
      HttpSession s = req.getSession();
      String uname = (String) s.getAttribute("check");
 
-     int id = Integer.parseInt(req.getParameter("noteid"));
+     // Session validation
+     if (uname == null) {
+         resp.sendRedirect("login.jsp");
+         return;
+     }
 
-     new NoteDao().deleteNote(id, uname);
+     String noteIdStr = req.getParameter("noteid");
+
+     // Parameter validation
+     if (noteIdStr == null) {
+         resp.sendRedirect("home.jsp");
+         return;
+     }
+
+     try {
+         int id = Integer.parseInt(noteIdStr);
+
+         new NoteDao().deleteNote(id, uname);
+
+         s.setAttribute("msg", "Note deleted successfully");
+
+     } catch (Exception e) {
+         e.printStackTrace();
+     }
 
      resp.sendRedirect("home.jsp");
  }
