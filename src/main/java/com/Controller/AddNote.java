@@ -1,16 +1,3 @@
-package com.Controller;
-
-import java.io.IOException;
-
-import com.Dao.NoteDao;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 @WebServlet("/addnote")
 public class AddNote extends HttpServlet {
 
@@ -20,9 +7,30 @@ public class AddNote extends HttpServlet {
      HttpSession s = req.getSession();
      String uname = (String) s.getAttribute("check");
 
+     // Login validation
+     if (uname == null) {
+         resp.sendRedirect("login.jsp");
+         return;
+     }
+
      String text = req.getParameter("notetext");
 
-     new NoteDao().insertNote(text, uname);
+     // Input validation
+     if (text == null || text.trim().isEmpty()) {
+         resp.sendRedirect("home.jsp");
+         return;
+     }
+
+     try {
+         text = text.trim();
+
+         new NoteDao().insertNote(text, uname);
+
+         s.setAttribute("msg", "Note added successfully");
+
+     } catch (Exception e) {
+         e.printStackTrace();
+     }
 
      resp.sendRedirect("home.jsp?status=added");
  }

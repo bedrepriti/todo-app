@@ -64,6 +64,7 @@ session.removeAttribute("msg");
             <input type="password" name="upass" id="upass" class="form-control" placeholder="Enter password" required>
         </div>
         <div class="mb-3">
+
             <label for="uemail" class="form-label">Email</label>
             <input type="email" name="uemail" id="uemail" class="form-control" placeholder="Enter email" required>
         </div>
