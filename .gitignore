@@ -1,3 +1,11 @@
-/build/
+# Eclipse / Java build
+build/
 *.class
-/target/
+
+# IDE files
+.classpath
+.settings/
+.project
+
+# WAR / JAR you want to track
+TodoApp.war
