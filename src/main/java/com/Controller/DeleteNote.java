@@ -35,3 +35,4 @@ public class DeleteNote extends HttpServlet {
      resp.sendRedirect("home.jsp");
  }
 }
+
