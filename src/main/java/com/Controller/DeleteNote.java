@@ -1,4 +1,16 @@
- @WebServlet("/deletenote")
+package com.Controller;
+
+import java.io.IOException;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.Dao.NoteDao;
+
+@WebServlet("/deletenote")
 public class DeleteNote extends HttpServlet {
 
  protected void service(HttpServletRequest req, HttpServletResponse resp)
