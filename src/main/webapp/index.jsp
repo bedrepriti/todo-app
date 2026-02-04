@@ -54,7 +54,8 @@ session.removeAttribute("msg");
 
 <div class="card card-signup">
     <h1 class="text-center mb-4">Sign Up</h1>
-    <form action="adduser" method="post">
+    <form action="${pageContext.request.contextPath}/adduser" method="post">
+
         <div class="mb-3">
             <label for="uname" class="form-label">Username</label>
             <input type="text" name="uname" id="uname" class="form-control" placeholder="Enter username" required>
