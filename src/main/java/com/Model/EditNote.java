@@ -1,41 +1,48 @@
 package com.Model;
 
-public class EditNote {
+import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import com.Dao.NoteDao;
 
-    int noteid;
-    String notetext;
-    String adddate;
-    String moddate;
+@WebServlet("/editnote") // must match form action
+public class EditNote extends HttpServlet {
 
-    public int getNoteid() {
-        return noteid;
-    }
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-    public void setNoteid(int noteid) {
-        this.noteid = noteid;
-    }
+        HttpSession s = req.getSession();
+        String uname = (String) s.getAttribute("check");
 
-    public String getNotetext() {
-        return notetext;
-    }
+        // Login validation
+        if (uname == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
 
-    public void setNotetext(String notetext) {
-        this.notetext = notetext;
-    }
+        String idStr = req.getParameter("noteid");
+        String text = req.getParameter("notetext");
 
-    public String getAdddate() {
-        return adddate;
-    }
+        // Input validation
+        if (idStr == null || text == null || text.trim().isEmpty()) {
+            resp.sendRedirect("home.jsp");
+            return;
+        }
 
-    public void setAdddate(String adddate) {
-        this.adddate = adddate;
-    }
+        try {
+            int id = Integer.parseInt(idStr);
+            text = text.trim();
 
-    public String getModdate() {
-        return moddate;
-    }
+            new NoteDao().updateNote(id, text, uname);
 
-    public void setModdate(String moddate) {
-        this.moddate = moddate;
+            s.setAttribute("msg", "Note updated successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        resp.sendRedirect("home.jsp");
     }
 }
