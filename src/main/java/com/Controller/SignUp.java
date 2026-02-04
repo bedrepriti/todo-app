@@ -12,7 +12,8 @@ import javax.servlet.http.HttpSession;
 import com.Dao.UsersInfoDao;
 
 
-@WebServlet("/adduser")
+@WebServlet("/signup")
+
 public class SignUp extends HttpServlet {
 
 	@Override
