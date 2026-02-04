@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import com.Dao.NoteDao;
 
-@WebServlet("/adduser")
+@WebServlet("/addnote")
 public class AddNote extends HttpServlet {
 
  protected void service(HttpServletRequest req, HttpServletResponse resp)
