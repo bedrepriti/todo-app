@@ -1,49 +1,40 @@
 package com.Controller;
 
 import java.io.IOException;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import com.Dao.NoteDao;
 
-@WebServlet("/addnote")
+@WebServlet("/addnote") // ✅ must match form action
 public class AddNote extends HttpServlet {
 
- protected void service(HttpServletRequest req, HttpServletResponse resp)
- throws IOException {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        String uname = (String) session.getAttribute("check");
 
-     HttpSession s = req.getSession();
-     String uname = (String) s.getAttribute("check");
+        if(uname == null){
+            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            return;
+        }
 
-     // Login validation
-     if (uname == null) {
-         resp.sendRedirect("login.jsp");
-         return;
-     }
+        String text = req.getParameter("notetext");
+        if(text == null || text.trim().isEmpty()){
+            resp.sendRedirect(req.getContextPath() + "/home.jsp");
+            return;
+        }
 
-     String text = req.getParameter("notetext");
+        try {
+            new NoteDao().insertNote(text.trim(), uname);
+            session.setAttribute("msg", "Note added successfully!");
+        } catch(Exception e){
+            e.printStackTrace();
+            session.setAttribute("msg", "Error adding note!");
+        }
 
-     // Input validation
-     if (text == null || text.trim().isEmpty()) {
-         resp.sendRedirect("home.jsp");
-         return;
-     }
-
-     try {
-         text = text.trim();
-
-         new NoteDao().insertNote(text, uname);
-
-         s.setAttribute("msg", "Note added successfully");
-
-     } catch (Exception e) {
-         e.printStackTrace();
-     }
-
-     resp.sendRedirect("home.jsp?status=added");
- }
+        resp.sendRedirect(req.getContextPath() + "/home.jsp");
+    }
 }

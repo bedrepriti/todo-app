@@ -1,41 +1,35 @@
 package com.Controller;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import com.Dao.UsersInfoDao;
 
-
-@WebServlet("/signup")
-
+@WebServlet("/adduser")  // ✅ This must match your signup form action
 public class SignUp extends HttpServlet {
 
-	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String name = req.getParameter("uname");
-		String pass = req.getParameter("upass");
-		String email = req.getParameter("uemail");
-		
-		UsersInfoDao uDao  = new UsersInfoDao();
-		String res = uDao.addUser(name, pass, email);
-		HttpSession s = req.getSession();
-		
-		if(res.equals("added"))
-		{
-			s.setAttribute("msg", "Account created Successfully");
-			resp.sendRedirect("index.jsp");
-		}
-		else
-		{
-			s.setAttribute("msg", "Account creation failed");
-			resp.sendRedirect("index.jsp");
-		}
-	}
-}
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) 
+            throws ServletException, IOException {
 
+        String name = req.getParameter("uname");
+        String pass = req.getParameter("upass");
+        String email = req.getParameter("uemail");
+
+        UsersInfoDao uDao = new UsersInfoDao();
+        String res = uDao.addUser(name, pass, email);
+
+        HttpSession s = req.getSession();
+        if(res.equals("added")) {
+            s.setAttribute("msg", "Account created successfully!");
+            resp.sendRedirect("login.jsp");
+        } else {
+            s.setAttribute("msg", "Account creation failed");
+            resp.sendRedirect("signup.jsp");
+        }
+    }
+}

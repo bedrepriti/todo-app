@@ -54,17 +54,17 @@ session.removeAttribute("msg");
 
 <div class="card card-login">
     <h1 class="text-center mb-4">Login</h1>
-    <form action="userlogin" method="post">
+    <form action="<%=request.getContextPath()%>/userlogin" method="post">
         <div class="mb-3">
             <label for="uname" class="form-label">Username</label>
-            <input type="text" name="uname" id="uname" class="form-control" placeholder="Enter username" required>
+            <input type="text" name="uname" id="uname" class="form-control" placeholder="Enter username" autocomplete="off" required>
         </div>
         <div class="mb-3">
             <label for="upass" class="form-label">Password</label>
-            <input type="password" name="upass" id="upass" class="form-control" placeholder="Enter password" required>
+            <input type="password" name="upass" id="upass" class="form-control" placeholder="Enter password" autocomplete="off" required>
         </div>
         <button type="submit" class="btn btn-primary btn-login">Login</button>
-        <p class="text-center mt-3">Don't have an account? <a href="signup.jsp" class="text-danger">Sign Up</a></p>
+        <p class="text-center mt-3">Don't have an account? <a href="<%=request.getContextPath()%>/signup.jsp" class="text-danger">Sign Up</a></p>
     </form>
 </div>
 
