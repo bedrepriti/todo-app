@@ -45,5 +45,5 @@ public class EditNote extends HttpServlet {
 
         resp.sendRedirect("home.jsp");
     }
-}
+}  
 
