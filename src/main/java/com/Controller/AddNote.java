@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.Dao.NoteDao;
 
-@WebServlet("/addnote") // ✅ must match form action
+@WebServlet("/addnote") 
 public class AddNote extends HttpServlet {
 
     @Override
